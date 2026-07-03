@@ -1,5 +1,16 @@
 # Changelog — KoolDots
 
+## v2.3.26
+
+## Fixed:
+
+- Some animation bezier values out-of-range
+  - Fixed both hyprlang and lua config files
+
+## Updated:
+
+## Changed:
+
 ## v2.3.25
 
 ## Fixed
@@ -44,6 +55,7 @@
 - NVIDIA Hybrid laptops have issues with cursors and GDM
   - Added more defensive code with fallbacks
 - Dynamic wallpaper is now also per monitor
+
 ## Fixed:
 
 - Disabled LayerRule for swaync
@@ -129,7 +141,7 @@
     - Not supported and no longer needed
   - Reset binding for fullscreen and maximize
     - `SUPER + F` is maximize
-    - `SHIFT + SHIFT + F` is fullscreen
+    - `SUPER + SHIFT + F` is fullscreen
     - Now works in all layouts
   - Enabled 12 min timer on turning off monitor
     - For a very long that's been disabled by default
@@ -138,6 +150,7 @@
     - Compliant with standard especially with `UWSM`
 
 ---
+
 - `Hyprlock.conf` and `Hyprlock-1080.conf` were removed, re-added
 
 ## v2.3.24
