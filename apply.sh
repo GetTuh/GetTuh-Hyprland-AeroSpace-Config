@@ -1,31 +1,30 @@
 #!/usr/bin/env bash
-# Fetches (if needed) and applies this repo's config/ tree into ~/.config.
+# Clones this repo fresh and applies the config for the current OS into ~/.config.
 # Existing targets are backed up once as <file>.bak before being overwritten.
-# Requires JaKooLit/Hyprland-Dots (or equivalent) already installed at ~/.config/hypr.
 #
-# Local usage:  ./apply.sh
-# Remote usage: sh <(curl -L https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
+# Usage (same command on Linux and macOS):
+#   sh <(curl -fsSL https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
 set -euo pipefail
 
 REPO_URL="https://github.com/GetTuh/Minimized-Hyprland-Dots.git"
 
-script_dir=""
-if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
-    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)" || script_dir=""
+repo_dir="$(mktemp -d)"
+trap 'rm -rf "$repo_dir"' EXIT
+git clone --depth 1 --quiet "$REPO_URL" "$repo_dir"
+
+case "$(uname -s)" in
+    Linux)  os_dir="hypr";      dest_dir="$HOME/.config/hypr" ;;
+    Darwin) os_dir="aerospace"; dest_dir="$HOME/.config/aerospace" ;;
+    *) echo "Unsupported OS: $(uname -s)" >&2; exit 1 ;;
+esac
+
+src_dir="$repo_dir/$os_dir"
+if [[ ! -d "$src_dir" ]]; then
+    echo "No $os_dir/ config in this repo yet." >&2
+    exit 1
 fi
 
-if [[ -n "$script_dir" && -d "$script_dir/config" ]]; then
-    repo_dir="$script_dir"
-else
-    repo_dir="$(mktemp -d)"
-    trap 'rm -rf "$repo_dir"' EXIT
-    git clone --depth 1 --quiet "$REPO_URL" "$repo_dir"
-fi
-
-src_dir="$repo_dir/config"
-dest_dir="$HOME/.config"
-
-if [[ ! -d "$HOME/.config/hypr" ]]; then
+if [[ "$os_dir" == "hypr" && ! -d "$HOME/.config/hypr" ]]; then
     echo "Warning: ~/.config/hypr not found. Install the base Hyprland dots first." >&2
 fi
 
@@ -41,9 +40,12 @@ while IFS= read -r -d '' file; do
     echo "applied: $rel"
 done < <(find "$src_dir" -type f -print0)
 
-if pidof Hyprland >/dev/null 2>&1 && command -v hyprctl >/dev/null 2>&1; then
+if [[ "$os_dir" == "hypr" ]] && pidof Hyprland >/dev/null 2>&1 && command -v hyprctl >/dev/null 2>&1; then
     hyprctl reload >/dev/null 2>&1 || true
     echo "Hyprland config reloaded."
+elif [[ "$os_dir" == "aerospace" ]] && pgrep -x AeroSpace >/dev/null 2>&1 && command -v aerospace >/dev/null 2>&1; then
+    aerospace reload-config >/dev/null 2>&1 || true
+    echo "AeroSpace config reloaded."
 else
-    echo "Hyprland not running -- changes apply on next login."
+    echo "Changes apply on next login/restart."
 fi

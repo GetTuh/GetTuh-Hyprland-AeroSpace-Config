@@ -1,6 +1,6 @@
-# Minimized Hyprland Dots
+# Minimized Dots
 
-Personal keybind overrides on top of [JaKooLit/Hyprland-Dots](https://github.com/LinuxBeginnings/Hyprland-Dots). This repo does not contain the base dots — install those first, then run `apply.sh` here to layer these files on top.
+Personal config overrides, same install command on every machine. On Linux it layers keybind/idle overrides on top of [JaKooLit/Hyprland-Dots](https://github.com/LinuxBeginnings/Hyprland-Dots) (install that first); on macOS it's meant for [AeroSpace](https://github.com/nikitabobko/AeroSpace) (not added yet).
 
 ## Setup
 
@@ -8,13 +8,7 @@ Personal keybind overrides on top of [JaKooLit/Hyprland-Dots](https://github.com
 sh <(curl -fsSL https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
 ```
 
-Or if you already have the repo cloned:
-
-```sh
-./apply.sh
-```
-
-Either way it copies everything under `config/` into `~/.config`, preserving paths, backing up any existing file once as `<file>.bak`, and reloading Hyprland if it's running.
+Always clones the repo fresh (so it works with no local checkout) and copies `hypr/` (Linux) or `aerospace/` (macOS) into `~/.config`, preserving paths and backing up any existing file once as `<file>.bak`. Since it always pulls from GitHub, local edits only take effect after you push them.
 
 ## What this changes vs. upstream
 
