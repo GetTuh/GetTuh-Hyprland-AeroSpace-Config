@@ -19,7 +19,15 @@ case "$choice" in
     "Random Wallpaper")      "$scriptsDir/WallpaperRandom.sh" ;;
     "Online Music")          "$UserScripts/RofiBeats.sh" ;;
     "Zsh Theme")             "$scriptsDir/ZshChangeTheme.sh" ;;
-    "Rainbow Border")        "$UserScripts/RainbowBorders-low-cpu.sh" --run-once ;;
+    "Rainbow Border")
+        rb_lock="/tmp/hypr-rainbowborders.lock"
+        if [[ -f "$rb_lock" ]] && kill -0 "$(cat "$rb_lock" 2>/dev/null)" 2>/dev/null; then
+            kill "$(cat "$rb_lock")" # stops the loop, which restores the previous border color
+        else
+            "$UserScripts/RainbowBorders-low-cpu.sh" &
+            disown
+        fi
+        ;;
     "Animations Menu")       "$scriptsDir/Animations.sh" ;;
     "Ghostty Theme")         "$scriptsDir/Ghostty_themes.sh" ;;
     "Rofi Theme (modified)") "$scriptsDir/RofiThemeSelector-modified.sh" ;;

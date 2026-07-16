@@ -1,8 +1,3 @@
----
-name: minimized-dots
-description: Use when adding, changing, or reasoning about anything in this repo (Minimized Hyprland/AeroSpace Dots) — explains the override-only philosophy, directory layout, and apply.sh install pattern before touching config.
----
-
 # Minimized Dots
 
 This repo is **not** a fork of [JaKooLit/Hyprland-Dots](https://github.com/LinuxBeginnings/Hyprland-Dots). It holds only the personal diff on top of a stock install, deployed by a single `apply.sh`. The whole point is near-zero upkeep: never vendor or copy upstream files wholesale, only track the override.
@@ -35,3 +30,7 @@ Always clones the repo fresh from GitHub into a temp dir — deliberately no loc
 ## General constraints
 
 Keep it minimal. Don't reintroduce a hotkey for something that fits the extras menu. Don't touch a vendor file if a `User*` override achieves the same effect. If a change needs a new mechanism (not covered above), that's a signal to stop and confirm the approach rather than bolt something on.
+
+## README upkeep
+
+`README.md`'s keybind tables must reflect reality. After any change to a keybind (add, remove, rebind, move to/from the extras menu), update the matching table and the extras-menu list in the same pass — don't leave it to drift. If a change doesn't cleanly fit an existing section or convention documented here, stop and flag it rather than forcing it in.
