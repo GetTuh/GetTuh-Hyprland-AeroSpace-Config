@@ -4,11 +4,18 @@ Personal keybind overrides on top of [JaKooLit/Hyprland-Dots](https://github.com
 
 ## Setup
 
+
+```sh
+sh <(curl -L https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
+```
+
+Or if you already have the repo cloned:
+
 ```sh
 ./apply.sh
 ```
 
-Copies everything under `config/` into `~/.config`, preserving paths, backing up any existing file once as `<file>.bak`, and reloading Hyprland if it's running.
+Either way it copies everything under `config/` into `~/.config`, preserving paths, backing up any existing file once as `<file>.bak`, and reloading Hyprland if it's running.
 
 ## What this changes vs. upstream
 

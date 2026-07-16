@@ -1,10 +1,27 @@
 #!/usr/bin/env bash
-# Copies everything under ./config into ~/.config, preserving paths.
+# Fetches (if needed) and applies this repo's config/ tree into ~/.config.
 # Existing targets are backed up once as <file>.bak before being overwritten.
 # Requires JaKooLit/Hyprland-Dots (or equivalent) already installed at ~/.config/hypr.
+#
+# Local usage:  ./apply.sh
+# Remote usage: sh <(curl -L https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
 set -euo pipefail
 
-repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_URL="https://github.com/GetTuh/Minimized-Hyprland-Dots.git"
+
+script_dir=""
+if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)" || script_dir=""
+fi
+
+if [[ -n "$script_dir" && -d "$script_dir/config" ]]; then
+    repo_dir="$script_dir"
+else
+    repo_dir="$(mktemp -d)"
+    trap 'rm -rf "$repo_dir"' EXIT
+    git clone --depth 1 --quiet "$REPO_URL" "$repo_dir"
+fi
+
 src_dir="$repo_dir/config"
 dest_dir="$HOME/.config"
 
