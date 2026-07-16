@@ -4,9 +4,8 @@ Personal keybind overrides on top of [JaKooLit/Hyprland-Dots](https://github.com
 
 ## Setup
 
-
 ```sh
-sh <(curl -L https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
+sh <(curl -fsSL https://raw.githubusercontent.com/GetTuh/Minimized-Hyprland-Dots/main/apply.sh)
 ```
 
 Or if you already have the repo cloned:
