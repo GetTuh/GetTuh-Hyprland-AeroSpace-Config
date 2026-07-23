@@ -34,3 +34,5 @@ Keep it minimal. Don't reintroduce a hotkey for something that fits the extras m
 ## README upkeep
 
 `README.md`'s keybind tables must reflect reality. After any change to a keybind (add, remove, rebind, move to/from the extras menu), update the matching table and the extras-menu list in the same pass — don't leave it to drift. If a change doesn't cleanly fit an existing section or convention documented here, stop and flag it rather than forcing it in.
+
+At the start of any session touching keybinds or README, also cross-check against the `Super+H` helper (vendor `scripts/KeyHints.sh`, hardcoded `yad` list — not generated from config, so it drifts independently of both the real binds and the README). Diff its entries against the actual keybinds (`configs/Keybinds.conf` +  `UserKeybinds.conf`) and flag anything it lists that's stale (unbound, moved to the extras menu) or missing from README. README stays authoritative and gets fixed to match the real config; KeyHints.sh is vendor and only gets a mention/flag, not an edit, unless the user asks for that exception.

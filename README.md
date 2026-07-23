@@ -12,10 +12,12 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 
 ## What this changes vs. upstream
 
-- Removed dedicated keybinds for one-off gimmicks (RofiBeats, zsh theme switcher, rainbow border, animations menu, emoji picker, Ghostty theme selector, the duplicate "modified" rofi theme selector, the static help/cheat-sheet file).
-- Wallpaper: kept only `Super+W` (picker). Effects and Random are no longer separate hotkeys.
+- Removed dedicated keybinds for one-off gimmicks (RofiBeats, zsh theme switcher, rainbow border, animations menu, emoji picker, Ghostty theme selector, the duplicate "modified" rofi theme selector, Waybar style menu, Waybar layout menu).
+- Wallpaper: no longer has a dedicated hotkey at all — picker, effects, and random are all in the extras menu now.
 - Everything removed above is still reachable from one place: `Super+X` (Extras menu).
 - Added: tap bare `Super` to open the app launcher.
+- Added: `Ctrl+Alt+S` to sleep the monitors (screen off) without suspending the system.
+- `Super+D` now opens Desktop overview (its old App-launcher duty moved to the bare `Super` tap); `Super+A` is unbound.
 
 ## Keybinds
 
@@ -23,7 +25,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | Keys | Action |
 |---|---|
 | `Super` (tap) | App launcher (Rofi) |
-| `Super + D` | App launcher (Rofi) |
+| `Super + D` | Desktop overview |
 | `Super + X` | Extras menu (everything unbound below, in one picker) |
 | `Super + Return` | Terminal |
 | `Super + E` | File manager |
@@ -31,9 +33,8 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Super + C` | SSH session manager |
 | `Super + S` | Web search |
 | `Super + Ctrl + S` | Window switcher |
-| `Super + A` | Desktop overview |
 | `Super + Alt + C` | Calculator |
-| `Super + Alt + V` | Clipboard manager |
+| `Super + V` | Clipboard manager |
 
 ### Windows
 | Keys | Action |
@@ -47,6 +48,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Super + Shift + Return` | Drop-down terminal |
 | `Super + Ctrl + O` | Toggle window opacity |
 | `Super + Shift + H` | Mute/unmute active window audio |
+| `Super + Alt + Mouse scroll` | Desktop zoom (magnifier) |
 | `Super + ←/→/↑/↓` | Focus window (direction) |
 | `Super + Ctrl + ←/→/↑/↓` | Move window (direction) |
 | `Super + Alt + ←/→/↑/↓` | Swap window (direction) |
@@ -73,7 +75,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Super + Ctrl + D` | Remove master |
 | `Super + Ctrl + Return` | Swap with master |
 | `Super + j / k` | Cycle next/prev window (layout-aware) |
-| `Super + Shift + I` | Toggle split (dwindle) |
+| `Super + Ctrl + I` | Toggle split (dwindle) |
 | `Super + P` | Toggle pseudo (dwindle) |
 | `Super + M` | Set split ratio 0.3 |
 | `Super + R` | Cycle column width preset (scrolling) |
@@ -97,12 +99,10 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 ### Wallpaper / Bar
 | Keys | Action |
 |---|---|
-| `Super + W` | Wallpaper picker |
 | `Super + T` | Global theme switcher (Wallust) |
 | `Super + N` | Toggle night light |
 | `Super + Ctrl + Alt + B` | Toggle Waybar visibility |
-| `Super + Ctrl + B` | Waybar style menu |
-| `Super + Alt + B` | Waybar layout menu |
+| `Super + Alt + B` | Hide waybar |
 
 ### System
 | Keys | Action |
@@ -110,6 +110,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Ctrl + Alt + Delete` | Exit Hyprland |
 | `Ctrl + Alt + L` | Lock screen |
 | `Ctrl + Alt + P` | Power menu |
+| `Ctrl + Alt + S` | Sleep monitors (screen off) |
 | `Super + Shift + N` | Notification panel |
 | `Super + Shift + E` | Quick settings menu |
 | `Super + Alt + O` | Toggle blur |
@@ -135,8 +136,8 @@ Multimedia, volume, mic-mute and brightness keys work out of the box.
 ### Extras menu (`Super + X`)
 Everything that used to have its own hotkey and didn't earn a place above — picked from a single Rofi list instead:
 
-Calculator, Emoji picker, Wallpaper effects, Random wallpaper, Online music, Zsh theme, Rainbow border, Animations menu, Ghostty theme, Rofi theme (modified), Help/cheat sheet.
+Emoji picker, Wallpaper picker, Wallpaper effects, Random wallpaper, Online music, Zsh theme, Rainbow border (on/off), Animations menu, Ghostty theme, Rofi theme (modified), Waybar style, Waybar layout.
 
 ## Known quirks (inherited from upstream)
 
-`Super + Alt + V` is bound twice in the base dots: clipboard manager and vertical-scroll-direction. Both fire; harmless unless you're on the scrolling layout and hit it by accident.
+`Super + Ctrl + K` is bound twice in the base dots: Kitty theme selector and move-window-into-group-left. Both fire; harmless unless you're on Kitty and grouping windows at the same time.
