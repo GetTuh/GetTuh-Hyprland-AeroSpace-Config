@@ -75,7 +75,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Super + Ctrl + D` | Remove master |
 | `Super + Ctrl + Return` | Swap with master |
 | `Super + j / k` | Cycle next/prev window (layout-aware) |
-| `Super + Ctrl + I` | Toggle split (dwindle) |
+| `Super + /` | Toggle split (dwindle) |
 | `Super + P` | Toggle pseudo (dwindle) |
 | `Super + M` | Set split ratio 0.3 |
 | `Super + R` | Cycle column width preset (scrolling) |
@@ -110,7 +110,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Ctrl + Alt + Delete` | Exit Hyprland |
 | `Ctrl + Alt + L` | Lock screen |
 | `Ctrl + Alt + P` | Power menu |
-| `Ctrl + Alt + S` | Sleep monitors (screen off) |
+| `Super + L` | Sleep monitors (screen off) |
 | `Super + Shift + N` | Notification panel |
 | `Super + Shift + E` | Quick settings menu |
 | `Super + Alt + O` | Toggle blur |
