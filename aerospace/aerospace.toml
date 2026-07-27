@@ -1,0 +1,176 @@
+# Personal override on top of AeroSpace's own defaults -- this is the macOS
+# counterpart to hypr/, translating what actually has an AeroSpace equivalent.
+# AeroSpace only does tiling/workspaces: it has no compositor, bar, wallpaper
+# engine, idle daemon, or screenshot tool, so most of hypr/UserConfigs/ has
+# nothing to translate to (see README's AeroSpace section for the full list
+# of what's intentionally not here and why).
+#
+# Unlike Hyprland's "source UserConfigs after defaults, last-value-wins"
+# model, AeroSpace's binding tables (mode.*.binding) and callback arrays fall
+# back to EMPTY if omitted, not to AeroSpace's own defaults -- so every bind
+# below is declared explicitly, including ones that happen to match
+# AeroSpace's stock config.
+
+config-version = 2
+start-at-login = true
+auto-reload-config = true
+
+# Mouse follows focus when the focused monitor changes (matches AeroSpace's
+# own default -- restated because unlike scalar keys, this array-valued key
+# falls back to empty, not to that default, if omitted).
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Matches hypr/UserConfigs/UserDecorations.conf (gaps_in = 0, gaps_out = 0).
+gaps.inner.horizontal = 0
+gaps.inner.vertical   = 0
+gaps.outer.left       = 0
+gaps.outer.bottom     = 0
+gaps.outer.top        = 0
+gaps.outer.right      = 0
+
+# Keep workspaces 1-9 alive even when empty, so the 3-per-monitor layout
+# below stays put instead of a workspace disappearing when the last window
+# on it closes -- this is what makes the assignment feel "static" the way
+# Hyprland's workspace = N, monitor:NAME is.
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+# Mirrors hypr/workspaces.conf's 3-workspaces-per-monitor scheme (DP-1
+# primary / HDMI-A-1 secondary / eDP-1 laptop panel). Monitor identity works
+# differently on macOS (no DP-1/HDMI-A-1/eDP-1 style names), so this uses
+# AeroSpace's portable monitor patterns instead:
+#   - 'main' = System Settings > Displays > Use as main display
+#   - 'built-in' = laptop panel, case-insensitive substring match, no-op if absent
+#   - 2 = second monitor left-to-right, 1-based -- NOT 'secondary', since
+#     'secondary' only resolves when exactly two monitors are connected and
+#     this setup assumes three (main + second external + built-in). Verify
+#     the actual left-to-right order with `aerospace list-monitors` once
+#     real hardware is known and swap in a regex pattern if it's clearer.
+[workspace-to-monitor-force-assignment]
+    1 = 'main'
+    2 = 'main'
+    3 = 'main'
+    4 = 2
+    5 = 2
+    6 = 2
+    7 = 'built-in'
+    8 = 'built-in'
+    9 = 'built-in'
+
+# mod = alt everywhere below, standing in for Hyprland's Super. Cmd is
+# deliberately left alone as a WM modifier -- it's claimed by macOS itself
+# and nearly every app's own shortcuts, unlike Linux's Super key which is
+# largely free. Ctrl/shift/cmd then layer on top of alt the same way
+# ctrl/alt/shift layered on top of Super in the Hyprland config.
+[mode.main.binding]
+    # --- Layout toggles (AeroSpace stock defaults) ---
+    alt-slash       = 'layout tiles horizontal vertical'
+    alt-shift-slash = 'layout accordion horizontal vertical' # closest analog to Hyprland's window "groups" (tabbed stack)
+
+    # --- Focus / move / swap / resize quads ---
+    # Hyprland: Super+arrows = focus, Super+Ctrl+arrows = move,
+    # Super+Alt+arrows = swap, Super+Shift+arrows = resize
+    alt-left  = 'focus left'
+    alt-down  = 'focus down'
+    alt-up    = 'focus up'
+    alt-right = 'focus right'
+
+    alt-ctrl-left  = 'move left'
+    alt-ctrl-down  = 'move down'
+    alt-ctrl-up    = 'move up'
+    alt-ctrl-right = 'move right'
+
+    alt-cmd-left  = 'swap left'
+    alt-cmd-down  = 'swap down'
+    alt-cmd-up    = 'swap up'
+    alt-cmd-right = 'swap right'
+
+    alt-shift-left  = 'resize smart -50'
+    alt-shift-right = 'resize smart +50'
+    alt-shift-up    = 'resize smart +50'
+    alt-shift-down  = 'resize smart -50'
+
+    # Substitute for Hyprland's bare "Alt + Tab" (cycle next window): alt is
+    # now the WM mod itself, so a bare alt-tab bind is taken below by
+    # workspace-back-and-forth instead. dfs-next/prev walks the tree order.
+    alt-backtick       = 'focus dfs-next'
+    alt-shift-backtick = 'focus dfs-prev'
+
+    # --- Windows ---
+    alt-q       = 'close'               # Hyprland: Super+Q
+    alt-shift-f = 'fullscreen'          # Hyprland: Super+Shift+F (AeroSpace has one fullscreen concept, no separate "maximize")
+    alt-space   = 'layout floating tiling' # Hyprland: Super+Space
+
+    # --- App launchers (adjust app names to match what's actually installed) ---
+    alt-enter = 'exec-and-forget open -na Ghostty' # Terminal
+    alt-e     = 'exec-and-forget open -a Finder'   # File manager
+    alt-b     = 'exec-and-forget open -a "Google Chrome"' # Default browser
+
+    # --- Workspaces ---
+    alt-0 = 'workspace 0'
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
+    alt-6 = 'workspace 6'
+    alt-7 = 'workspace 7'
+    alt-8 = 'workspace 8'
+    alt-9 = 'workspace 9'
+
+    # Move window to workspace + follow it (Hyprland: Super+Shift+0-9)
+    alt-shift-0 = 'move-node-to-workspace 0 --focus-follows-window'
+    alt-shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
+    alt-shift-2 = 'move-node-to-workspace 2 --focus-follows-window'
+    alt-shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
+    alt-shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
+    alt-shift-5 = 'move-node-to-workspace 5 --focus-follows-window'
+    alt-shift-6 = 'move-node-to-workspace 6 --focus-follows-window'
+    alt-shift-7 = 'move-node-to-workspace 7 --focus-follows-window'
+    alt-shift-8 = 'move-node-to-workspace 8 --focus-follows-window'
+    alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
+
+    # Move window to workspace, stay put (Hyprland: Super+Ctrl+0-9, "silent")
+    alt-ctrl-0 = 'move-node-to-workspace 0'
+    alt-ctrl-1 = 'move-node-to-workspace 1'
+    alt-ctrl-2 = 'move-node-to-workspace 2'
+    alt-ctrl-3 = 'move-node-to-workspace 3'
+    alt-ctrl-4 = 'move-node-to-workspace 4'
+    alt-ctrl-5 = 'move-node-to-workspace 5'
+    alt-ctrl-6 = 'move-node-to-workspace 6'
+    alt-ctrl-7 = 'move-node-to-workspace 7'
+    alt-ctrl-8 = 'move-node-to-workspace 8'
+    alt-ctrl-9 = 'move-node-to-workspace 9'
+
+    alt-period = 'workspace next' # Hyprland: Super+.
+    alt-comma  = 'workspace prev' # Hyprland: Super+,
+
+    alt-tab       = 'workspace-back-and-forth'                    # AeroSpace stock default
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next' # AeroSpace stock default
+
+    # Move workspace to monitor by direction (Hyprland: Super+Ctrl+F9-F12,
+    # via UserScripts/MoveWorkspaceToMonitor.sh). No script/re-pin hack
+    # needed here -- AeroSpace just has the opposite constraint instead:
+    # this command is a documented no-op for any workspace that has a
+    # `workspace-to-monitor-force-assignment` entry, which is all of 1-9
+    # above. Only useful for extra, unassigned workspaces (e.g. 0, A-Z).
+    alt-ctrl-f9  = 'move-workspace-to-monitor left'
+    alt-ctrl-f10 = 'move-workspace-to-monitor right'
+    alt-ctrl-f11 = 'move-workspace-to-monitor up'
+    alt-ctrl-f12 = 'move-workspace-to-monitor down'
+
+    # --- Mode switch ---
+    alt-shift-semicolon = 'mode service'
+
+# 'service' binding mode (AeroSpace stock default). Prefix: Alt+Shift+;
+[mode.service.binding]
+    esc       = ['reload-config', 'mode main']
+    r         = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f         = ['layout floating tiling', 'mode main'] # same as alt-space, kept for discoverability
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    # join-with: the other half of the "groups" analogy above -- folds the
+    # focused window into the neighboring container in that direction.
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
