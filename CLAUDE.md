@@ -19,6 +19,14 @@ Every file's path under `hypr/` or `aerospace/` is the exact relative path it la
 - **Everything else** (gaps, animations, decorations, window/layer rules): the vendor config already sources `UserConfigs/User*.conf` after the defaults, and Hyprland does last-value-wins, so setting a value there overrides the default with no `unbind` needed.
 - **Startup daemons** (`exec-once` in `Startup_Apps.conf`) have no override mechanism in Hyprland — there's no `unexec`. That one vendor file is the sole accepted exception if a daemon must be disabled.
 
+### Lua path (parallel to the .conf mechanism above)
+
+Hyprland 0.55+ added a Lua config format (`hyprland.lua`) alongside the original `hyprlang` `.conf` format; hyprlang is expected to be dropped a couple releases out. The vendor base already ships a full Lua override skeleton next to its `.conf` one — `~/.config/hypr/lua/user_overrides.lua` loads `UserConfigs/user_*.lua` files (one per concern: `user_keybinds.lua`, `user_decorations.lua`, `user_settings.lua`, `user_window_rules.lua`, `user_startup.lua`, etc.), each pulling its dispatch/bind helpers from `~/.config/hypr/lua/*_helper.lua`. This repo now carries the Lua counterpart of every existing `.conf` override under `hypr/UserConfigs/user_*.lua`, plus `hypr/lua/workspaces.lua` (the Lua counterpart of the top-level `workspaces.conf`, same wholesale-replacement pattern since neither file goes through the default/user split).
+
+Whichever entrypoint exists at `~/.config/hypr/hyprland.lua` (vs. `hyprland.conf`) is what Hyprland actually loads — only one is active at a time on a given machine. **Until hyprlang is actually removed upstream, keep both the `.conf` and `.lua` versions of an override in sync** when making a keybind/setting change; don't let one drift silently just because the machine you're testing on is running the other entrypoint. Once hyprlang is confirmed dropped, the `.conf` overrides (and this note) should be deleted in one pass rather than left as dead weight.
+
+One known gap: `UserDecorations.conf` sources `wallust/wallust-hyprland.conf` for live-generated colors on every wallpaper change; there's no Lua equivalent for sourcing a generated hyprlang variable file yet (vendor's own `lua/decorations.lua` template calls this out too), so `user_decorations.lua` currently hardcodes a color snapshot instead and will go stale on the next wallpaper change until vendor Lua/wallust parity lands.
+
 ## Extras menu pattern
 
 Don't give every rarely-used feature its own dedicated hotkey. If something is a one-off (theme switchers, emoji picker, wallpaper effects, etc.), `unbind` its dedicated key in `UserKeybinds.conf` and add it as an entry in `hypr/UserScripts/ExtrasMenu.sh` instead — a single Rofi picker bound to one key (`Super+X`). Prefer extending that menu over adding a new standalone bind.
