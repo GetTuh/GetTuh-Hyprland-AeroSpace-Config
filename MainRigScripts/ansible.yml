@@ -1,0 +1,64 @@
+---
+- name: Main rig setup
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Disable mouse wakeup from sleep (AJAZZ 2.4G 8K)
+      copy:
+        dest: /etc/udev/rules.d/99-disable-mouse-wakeup.rules
+        content: 'ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="402d", ATTR{power/wakeup}="disabled"'
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload udev rules
+
+    - name: Find KDE Connect device directories
+      find:
+        paths: "{{ lookup('env', 'HOME') }}/.config/kdeconnect"
+        file_type: directory
+      become: false
+      register: kdeconnect_devices
+
+    - name: Ensure kdeconnect_runcommand dirs exist
+      file:
+        path: "{{ item.path }}/kdeconnect_runcommand"
+        state: directory
+        mode: '0755'
+      loop: "{{ kdeconnect_devices.files }}"
+      become: false
+
+    - name: Deploy KDE Connect run commands
+      copy:
+        dest: "{{ item.path }}/kdeconnect_runcommand/config"
+        content: |
+          [General]
+          commands="@ByteArray({\"25b74d33_5a26_4e97_bfe2_bdee4cc9e111\":{\"command\":\"/home/elo/Documents/MainRigScripts/screenscripts.sh --brightness-up\",\"name\":\"brightness up\"},\"b9e1f2a3_4c5d_6e7f_8091_a2b3c4d5e6f7\":{\"command\":\"/home/elo/Documents/MainRigScripts/screenscripts.sh --brightness-down\",\"name\":\"brightness down\"}})"
+        mode: '0644'
+      loop: "{{ kdeconnect_devices.files }}"
+      become: false
+
+    - name: Disable USB autosuspend via udev
+      copy:
+        dest: /etc/udev/rules.d/usb-no-autosuspend.rules
+        content: |
+          ACTION=="add", SUBSYSTEM=="usb", TEST=="power/autosuspend", ATTR{power/autosuspend}="-1"
+          ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload udev rules
+
+    - name: Add upoff and upreb aliases to .bashrc
+      blockinfile:
+        path: "{{ lookup('env', 'HOME') }}/.bashrc"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - update aliases"
+        block: |
+          alias upoff='sudo dnf update -y && sudo poweroff'
+          alias upreb='sudo dnf update -y && sudo reboot'
+      become: false
+
+  handlers:
+    - name: Reload udev rules
+      shell: udevadm control --reload-rules && udevadm trigger

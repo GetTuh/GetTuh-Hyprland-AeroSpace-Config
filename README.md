@@ -1,6 +1,6 @@
 # Minimized Dots
 
-Personal config overrides, same install command on every machine. On Linux it layers keybind/idle overrides on top of [JaKooLit/Hyprland-Dots](https://github.com/LinuxBeginnings/Hyprland-Dots) (install that first); on macOS it's meant for [AeroSpace](https://github.com/nikitabobko/AeroSpace) (not added yet).
+Personal config overrides, same install command on every machine. On Linux it layers keybind/idle overrides on top of [JaKooLit/Hyprland-Dots](https://github.com/LinuxBeginnings/Hyprland-Dots) (install that first); on macOS it's a standalone config for [AeroSpace](https://github.com/nikitabobko/AeroSpace) (install that first) -- AeroSpace has no vendor base to layer on top of, so `aerospace/aerospace.toml` is the entire config, not a diff.
 
 ## Setup
 
@@ -131,7 +131,7 @@ Always clones the repo fresh (so it works with no local checkout) and copies `hy
 | `Alt + Print` | Screenshot active window |
 | `Alt + Shift + S` | Hyprshot region capture |
 
-Multimedia, volume, mic-mute and brightness keys work out of the box.
+Multimedia, volume, mic-mute keys work out of the box.
 
 ### Extras menu (`Super + X`)
 Everything that used to have its own hotkey and didn't earn a place above — picked from a single Rofi list instead:
@@ -141,3 +141,71 @@ Emoji picker, Wallpaper picker, Wallpaper effects, Random wallpaper, Online musi
 ## Known quirks (inherited from upstream)
 
 `Super + Ctrl + K` is bound twice in the base dots: Kitty theme selector and move-window-into-group-left. Both fire; harmless unless you're on Kitty and grouping windows at the same time.
+
+## AeroSpace (macOS)
+
+`aerospace/aerospace.toml` translates the Linux keybind/workspace setup above wherever AeroSpace has an equivalent concept. AeroSpace is tiling/workspaces only — no compositor, bar, wallpaper engine, idle daemon, or screenshot tool — so most of `hypr/UserConfigs/` (decorations, blur, animations, Waybar, wallust theming, hypridle) has nothing to translate to; those stay macOS-native or out of scope. See the bottom of this section for the full list of what's intentionally missing.
+
+`alt` is the AeroSpace mod key everywhere below, standing in for Hyprland's `Super`. `cmd` is deliberately left alone as a modifier — it's claimed by macOS itself and nearly every app, unlike Linux's mostly-free Super key. `ctrl`/`shift`/`cmd` then layer on top of `alt` the same way `ctrl`/`alt`/`shift` layered on top of `Super` on Linux.
+
+### Windows
+| Keys | Action |
+|---|---|
+| `Alt + Q` | Close active window |
+| `Alt + Shift + F` | Fullscreen (AeroSpace has one fullscreen concept — no separate maximize) |
+| `Alt + Space` | Toggle floating |
+| `Alt + ←/→/↑/↓` | Focus window (direction) |
+| `Alt + Ctrl + ←/→/↑/↓` | Move window (direction) |
+| `Alt + Cmd + ←/→/↑/↓` | Swap window (direction) |
+| `Alt + Shift + ←/→/↑/↓` | Resize window |
+| `Alt + `` ` `` | Cycle next window (substitute for bare `Alt+Tab`, which alt-as-mod takes for workspace-back-and-forth below) |
+| `Alt + Shift + `` ` `` | Cycle previous window |
+
+### Layouts
+| Keys | Action |
+|---|---|
+| `Alt + /` | Toggle tiles orientation (h/v) |
+| `Alt + Shift + /` | Toggle accordion (closest analog to Hyprland's window "groups") |
+
+### Workspaces
+| Keys | Action |
+|---|---|
+| `Alt + 0-9` | Go to workspace |
+| `Alt + Shift + 0-9` | Move window to workspace + follow |
+| `Alt + Ctrl + 0-9` | Move window to workspace (silent) |
+| `Alt + . / ,` | Next/previous workspace |
+| `Alt + Tab` | Workspace back-and-forth (last two) |
+| `Alt + Shift + Tab` | Move workspace to next monitor |
+| `Alt + Ctrl + F9-F12` | Move workspace to monitor (l/r/u/d) — no-op for workspaces 1-9 (see config comment: they're force-assigned to a monitor) |
+
+### App launchers
+| Keys | Action |
+|---|---|
+| `Alt + Return` | Terminal |
+| `Alt + E` | File manager |
+| `Alt + B` | Default browser |
+
+### Service mode (`Alt + Shift + ;`, then...)
+| Keys | Action |
+|---|---|
+| `Esc` | Reload config |
+| `R` | Reset layout |
+| `Backspace` | Close all windows but current |
+| `Alt + Shift + H/J/K/L` | Join window into neighbor (the other half of the "groups" analogy) |
+
+### 3 workspaces per monitor
+Same scheme as `hypr/workspaces.conf`: workspaces 1-3 on the main monitor, 4-6 on the second external, 7-9 on the built-in laptop panel — see `workspace-to-monitor-force-assignment` in `aerospace.toml` for the exact monitor patterns and a note on verifying monitor order with `aerospace list-monitors`.
+
+### What doesn't carry over, and why
+- **Decorations/blur/animations/rounding** (`UserDecorations.conf`) — AeroSpace doesn't touch window rendering at all; macOS's native window chrome is used as-is.
+- **Waybar, wallust theme switching, night light** — no bar or theming engine in AeroSpace; use a separate bar tool (e.g. Sketchybar) if wanted, or macOS's own Night Shift.
+- **Window opacity rule** (`WindowRules.conf`) — same reason as decorations; not part of AeroSpace's scope, and macOS has no system-wide equivalent either.
+- **hypridle/hyprlock (idle warn, auto-lock, dpms off, suspend)** — AeroSpace doesn't manage idle or power state; use System Settings → Lock Screen / Battery instead.
+- **Screenshots** — macOS's native shortcuts (`Cmd+Shift+3/4/5`) already cover this; nothing to configure.
+- **Mouse accel-off, kwalletd6** (`UserSettings.conf`) — OS/input-driver level, not a WM setting; macOS has no native accel toggle (third-party tools like LinearMouse exist but aren't part of this repo), and Keychain replaces kwallet's job.
+- **Force-quit, power menu, notification/quick-settings panels** — all macOS-native (`Cmd+Option+Esc`, Control Center, etc.), nothing for a WM to bind.
+- **Hyprland's master/scrolling/monocle layout engines, column-width presets** — AeroSpace only has two layout kinds (tiles, accordion); there's no master-stack or scrolling-column concept to map those binds onto.
+
+# MainRigScripts
+
+Copy HA TOKEN as .env (HA_TOKEN=) to the MainRigScripts folder.
