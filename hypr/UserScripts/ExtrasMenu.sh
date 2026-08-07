@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Single pick-list for everything that used to have its own dedicated keybind.
-# Bound to Super+X in UserKeybinds.conf. Add/remove lines here, not new binds.
+# Bound to Super+X in user_keybinds.lua. Add/remove lines here, not new binds.
 
 scriptsDir="$HOME/.config/hypr/scripts"
 UserScripts="$HOME/.config/hypr/UserScripts"

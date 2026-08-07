@@ -38,11 +38,11 @@ local apply_window_rule = user_window_rules_helper.apply_window_rule
 -- which has a bunch of per-tag/per-class opacity rules (browser, terminal,
 -- file-manager, PiP, wallpaper picker, etc.) -- this catch-all matches every
 -- window and, coming later, wins for all of them.
--- NOTE: hl.meta.lua's HL.WindowRuleSpec stub only documents match/name/enabled
--- explicitly; opacity's table shape below is inferred from the hyprlang
--- "opacity <active> <inactive>" syntax and is unverified against the real API.
+-- NOTE: opacity takes the raw hyprlang "opacity <active> <inactive>" string,
+-- not a table -- verified live via hyprctl eval (a table throws "field opacity
+-- string type requires a string").
 apply_window_rule({
     name = "user-force-full-opacity",
     match = { class = ".*" },
-    opacity = { active = 1.0, inactive = 1.0 },
+    opacity = "1.0 1.0",
 })

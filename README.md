@@ -197,12 +197,12 @@ Emoji picker, Wallpaper picker, Wallpaper effects, Random wallpaper, Online musi
 Same scheme as `hypr/workspaces.conf`: workspaces 1-3 on the main monitor, 4-6 on the second external, 7-9 on the built-in laptop panel — see `workspace-to-monitor-force-assignment` in `aerospace.toml` for the exact monitor patterns and a note on verifying monitor order with `aerospace list-monitors`.
 
 ### What doesn't carry over, and why
-- **Decorations/blur/animations/rounding** (`UserDecorations.conf`) — AeroSpace doesn't touch window rendering at all; macOS's native window chrome is used as-is.
+- **Decorations/blur/animations/rounding** (`user_decorations.lua`) — AeroSpace doesn't touch window rendering at all; macOS's native window chrome is used as-is.
 - **Waybar, wallust theme switching, night light** — no bar or theming engine in AeroSpace; use a separate bar tool (e.g. Sketchybar) if wanted, or macOS's own Night Shift.
-- **Window opacity rule** (`WindowRules.conf`) — same reason as decorations; not part of AeroSpace's scope, and macOS has no system-wide equivalent either.
+- **Window opacity rule** (`system_window_rules.lua`) — same reason as decorations; not part of AeroSpace's scope, and macOS has no system-wide equivalent either.
 - **hypridle/hyprlock (idle warn, auto-lock, dpms off, suspend)** — AeroSpace doesn't manage idle or power state; use System Settings → Lock Screen / Battery instead.
 - **Screenshots** — macOS's native shortcuts (`Cmd+Shift+3/4/5`) already cover this; nothing to configure.
-- **Mouse accel-off, kwalletd6** (`UserSettings.conf`) — OS/input-driver level, not a WM setting; macOS has no native accel toggle (third-party tools like LinearMouse exist but aren't part of this repo), and Keychain replaces kwallet's job.
+- **Mouse accel-off, kwalletd6** (`user_settings.lua`) — OS/input-driver level, not a WM setting; macOS has no native accel toggle (third-party tools like LinearMouse exist but aren't part of this repo), and Keychain replaces kwallet's job.
 - **Force-quit, power menu, notification/quick-settings panels** — all macOS-native (`Cmd+Option+Esc`, Control Center, etc.), nothing for a WM to bind.
 - **Hyprland's master/scrolling/monocle layout engines, column-width presets** — AeroSpace only has two layout kinds (tiles, accordion); there's no master-stack or scrolling-column concept to map those binds onto.
 
