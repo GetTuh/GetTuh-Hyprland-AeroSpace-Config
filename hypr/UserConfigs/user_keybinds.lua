@@ -1,7 +1,5 @@
--- Lua port of UserConfigs/UserKeybinds.conf. Keep both in sync until hyprlang
--- is fully dropped -- vendor's user_overrides.lua only runs the .conf legacy
--- shim when this file is absent, so whichever exists "wins" depending on
--- whether hyprland.lua or hyprland.conf is the active entrypoint.
+-- Lua port of the old UserConfigs/UserKeybinds.conf (removed once hyprland.lua
+-- became the sole entrypoint on this machine).
 local user_keybinds_helper = nil
 do
   local source = (debug.getinfo(1, "S") or {}).source or ""

@@ -194,7 +194,7 @@ Emoji picker, Wallpaper picker, Wallpaper effects, Random wallpaper, Online musi
 | `Alt + Shift + H/J/K/L` | Join window into neighbor (the other half of the "groups" analogy) |
 
 ### 3 workspaces per monitor
-Same scheme as `hypr/workspaces.conf`: workspaces 1-3 on the main monitor, 4-6 on the second external, 7-9 on the built-in laptop panel — see `workspace-to-monitor-force-assignment` in `aerospace.toml` for the exact monitor patterns and a note on verifying monitor order with `aerospace list-monitors`.
+Same scheme as `hypr/lua/workspaces.lua`: workspaces 1-3 on the main monitor, 4-6 on the second external, 7-9 on the built-in laptop panel — see `workspace-to-monitor-force-assignment` in `aerospace.toml` for the exact monitor patterns and a note on verifying monitor order with `aerospace list-monitors`.
 
 ### What doesn't carry over, and why
 - **Decorations/blur/animations/rounding** (`user_decorations.lua`) — AeroSpace doesn't touch window rendering at all; macOS's native window chrome is used as-is.
